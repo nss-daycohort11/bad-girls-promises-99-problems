@@ -1,40 +1,39 @@
 define(function(require) {
   var _ = require("lodash");
+  var Q = require("q");
+  var $ = require("jquery");
 
-  return {
-    load: function(fn) {
-      // This XHR should be in its own require module, not here
-      $.ajax("https://nss-book-store.firebaseio.com/booktypes.json").done(function(types) {
+  return function() {
+    var deferred = Q.defer();
 
-        // This XHR does belong here
-        $.ajax("https://nss-book-store.firebaseio.com/books.json").done(function(books) {
+    $.ajax({
+      url: "https://nss-book-store.firebaseio.com/books.json"
+    }).done(function(books) {
+      deferred.resolve(books);
+    }).fail(function(xhr, status, error) {
+      deferred.reject(error);
+    });
 
-          /*
-            This code is dependent upon two XHRs and violates
-            the Single Responsibility Principle.
+    return deferred.promise;
+    console.log(deferred.promise);
 
-            I've also given you a little preview of ES6 (the newest
-            version of JavaScript syntax). They are called fat arrows.
-            Check out the docs at http://es6-features.org/#ExpressionBodies
-          */
-          types = Object.keys( types ).map(key => types[ key ]);
-          books = Object.keys( books ).map(key => books[ key ]);
 
-          /*
-            I'm using the lodash `find()` method here.
-              https://lodash.com/docs#find
-           */
-          var books = books.map(book => {
-            book.type = _.find(types, { id:book.booktype }).label;
-            return book;
-          });
+        /*
+          This code is dependent upon two XHRs and violates
+          the Single Responsibility Principle.
 
-          // Still relying on a callback? That's so 2014...
-          fn(books);
+          I've also given you a little preview of ES6 (the newest
+          version of JavaScript syntax). They are called fat arrows.
+          Check out the docs at http://es6-features.org/#ExpressionBodies
+        */
+        
+        books = Object.keys( books ).map(key => books[ key ]);
 
-        });
-      });
+        /*
+          I'm using the lodash `find()` method here.
+            https://lodash.com/docs#find
+         */
+   
 
-    }
-  };
+      }
 });

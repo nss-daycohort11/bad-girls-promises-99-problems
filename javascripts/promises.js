@@ -29,10 +29,37 @@ requirejs(
     listOfBooks.booksTemplate = books;
       console.log("books in promise.js", books);
       console.log("listOfBooks in promise.js", listOfBooks);
-      dom.dom(listOfBooks);
+      
+      return get_book_types(books)
 
-    }) 
-    .fail();
+    }).then(function(types){
+      //loop over books and find the corresponding key over types
+      //them give the book a type key. send that array to the handlebar template.
+      console.log("list of Books>>>>>>", listOfBooks)
+      for (key in listOfBooks.booksTemplate){
+        console.log("loop works");
+        if (types.fiction.id === listOfBooks.booksTemplate[key].booktype) {
+          console.log("conditional statement works");
+
+            listOfBooks.booksTemplate[key].booktype = types.fiction.label;
+            
+            
+            console.log("booktype fiction", listOfBooks.booksTemplate.booktype);
+
+
+        } else if (types.science.id === listOfBooks.booksTemplate[key].booktype) {
+
+          listOfBooks.booksTemplate[key].booktype = types.science.label;
+          console.log("booktype science", listOfBooks.booksTemplate.booktype);
+          
+        }
+
+      }
+      dom.dom(listOfBooks);
+    })
+    .fail(function(){
+      console.log("error");
+      });
 
 
   }

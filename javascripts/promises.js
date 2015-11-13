@@ -53,6 +53,7 @@ requirejs(
           console.log("booktype science", listOfBooks.booksTemplate.booktype);
           
         }
+      
 
       }
       dom.dom(listOfBooks);

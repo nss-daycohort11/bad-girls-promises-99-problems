@@ -1,4 +1,15 @@
-{{#each books}}
-  <h3>{{ title }}</h3>
-  <section>{{ type }}</section>
+{{#each booksTemplate}}
+	<h3>Title: {{ title }}</h3>
+	<section>Author: {{ author }}</section>
+	<section>Publisher: {{ publisher }}</section>
+	<section>Synopsis: {{ synopsis }}</section>
+	<section>Year: {{ year }}</section>
+ 	<section>Types: {{booktype}} </section>
+ 			
+
+
 {{/each}}
+
+
+
+
